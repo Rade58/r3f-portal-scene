@@ -50,8 +50,20 @@ This way we will center our model, or each part of our model since we are adding
 
 Since there is only two of them, there is almost no impact on performance at all
 
-# Shaders
+# Shaders - portal shader
 
-I installed couple of things, and added altered configuration, I also added global.d.ts file to cover importing of shaders
+I installed `"vite-plugin-glslify"`, and added plugin to vite configuration, I also added global.d.ts file to cover importing of shaders
 
 Also don't forget to install noise functions if you want to import them with #pragma syntax
+
+I installed `"glsl-noise"` because in fragment shader I'm using 3d noise
+
+I also defined and set uniforms
+
+and inside useFrame, i;m updating uTime uniform
+
+I also define color change of some uniforms in leva (color) but this didn't work
+
+**So I use onChange callback for setting these color uniforms**
+
+check `src/6_portal/Experience.tsx` so you can see what I did

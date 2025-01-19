@@ -17,13 +17,33 @@ import portalFragmentShader from "./portal/fragment.glsl";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
+const portalUColors = {
+  uColorStart: "#89bfcd",
+  uColorEnd: "#ecdada",
+};
+
 export function Experience() {
   const portalMaterialRef = useRef<ShaderMaterial>(null);
 
-  const portalControls = useControls("portal", {
-    uColorStart: { value: "#89bfcd" },
-    uColorEnd: { value: "#ecdada" },
+  /* const portalControls = */ useControls("portal", {
+    uColorStart: {
+      value: portalUColors.uColorStart,
+      onChange(val) {
+        if (portalMaterialRef.current) {
+          portalMaterialRef.current.uniforms["uColorStart"].value.set(val);
+        }
+      },
+    },
+    uColorEnd: {
+      value: portalUColors.uColorEnd,
+      onChange(val) {
+        if (portalMaterialRef.current) {
+          portalMaterialRef.current.uniforms["uColorEnd"].value.set(val);
+        }
+      },
+    },
   });
+
   const bakedTexture = useTexture("/models/portal/baked.jpg");
 
   // bakedTexture.flipY = false;
@@ -104,8 +124,8 @@ export function Experience() {
             uTime: { value: 0 },
             // as you can see we used color we extracted
             // and some other color, a white
-            uColorStart: { value: new Color(portalControls.uColorStart) },
-            uColorEnd: { value: new Color(portalControls.uColorEnd) },
+            uColorStart: { value: new Color(portalUColors.uColorStart) },
+            uColorEnd: { value: new Color(portalUColors.uColorEnd) },
           }}
         />
       </mesh>
