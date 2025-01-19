@@ -17,7 +17,7 @@ export function App() {
       <Canvas
         // onCreated={created}
         // dpr={[1, 2]}
-        // flat
+        flat
         gl={
           {
             // antialias: true,
