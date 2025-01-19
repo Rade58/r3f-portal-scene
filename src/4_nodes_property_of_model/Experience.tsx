@@ -9,6 +9,8 @@ export function Experience() {
 
   const model = useGLTF("/models/portal/scene.glb");
 
+  console.log({ model });
+
   return (
     <>
       {/* <Perf position="top-left" /> */}

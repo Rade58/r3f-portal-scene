@@ -24,4 +24,14 @@ pnpm add -D r3f-perf @types/three
 
 latest version has bug I think, unable to use joystick and color picker (maybe because I'm using react 18)
 
-# What we did
+# We will not going to load whole model at once
+
+The model is composed of multiple parts
+
+- The baked model to which we need to apply a MeshBasicMaterial with the baked texture
+- Two pole lights Meshes to which we need to apply a MeshBasicMaterial
+- The portal to which we need to apply a ShaderMaterial
+
+So we are going to access `nodes` property of the model we get from useGLTF
+
+And what is great is that nodes have names we gave them in blender
