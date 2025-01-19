@@ -103,7 +103,6 @@ export function Experience() {
       // instead of this
       // portalMaterialRef.current.uniforms["uTime"].value = elapsed;
       // we do it like this
-      // @ts-expect-error made with extend, uniform not typed
       // portalMaterialRef.current["uTime"] = elapsed;
       // @ts-expect-error made with extend, uniform not typed
       portalMaterialRef.current["uTime"] += delta;
