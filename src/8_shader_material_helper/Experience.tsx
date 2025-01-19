@@ -1,12 +1,20 @@
-import { Center, OrbitControls, useGLTF, useTexture } from "@react-three/drei";
+import { extend, useFrame } from "@react-three/fiber";
+import {
+  Center,
+  OrbitControls,
+  useGLTF,
+  useTexture,
+  Sparkles,
+  shaderMaterial,
+} from "@react-three/drei";
 import {
   Color,
   DoubleSide,
   type ShaderMaterial,
-  SRGBColorSpace,
   type Group,
   type Mesh,
 } from "three";
+import { useRef } from "react";
 
 // import { Perf } from "r3f-perf";
 
@@ -14,23 +22,44 @@ import { useControls } from "leva";
 
 import portalVertexShader from "./portal/vertex.glsl";
 import portalFragmentShader from "./portal/fragment.glsl";
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
 
 const portalUColors = {
   uColorStart: "#89bfcd",
   uColorEnd: "#ecdada",
 };
 
+//  -------------------------------------------------------
+//  -------------------------------------------------------
+const PortalShaderMaterial = shaderMaterial(
+  {
+    uTime: 0,
+    uColorStart: new Color(portalUColors.uColorStart),
+    uColorEnd: new Color(portalUColors.uColorEnd),
+  },
+  portalVertexShader,
+  portalFragmentShader
+);
+
+extend({ PortalShaderMaterial });
+//  -------------------------------------------------------
+//  -------------------------------------------------------
+
 export function Experience() {
-  const portalMaterialRef = useRef<ShaderMaterial>(null);
+  // instead of this
+  // const portalMaterialRef = useRef<ShaderMaterial>(null);
+  const portalMaterialRef = useRef<typeof PortalShaderMaterial>(null);
 
   /* const portalControls = */ useControls("portal", {
     uColorStart: {
       value: portalUColors.uColorStart,
       onChange(val) {
+        // instead of this
         if (portalMaterialRef.current) {
-          portalMaterialRef.current.uniforms["uColorStart"].value.set(val);
+          // instead of this
+          // portalMaterialRef.current.uniforms["uColorStart"].value.set(val);
+          // we do this
+          // @ts-expect-error uniform type not there
+          portalMaterialRef.current["uColorStart"].set(val);
         }
       },
     },
@@ -38,18 +67,17 @@ export function Experience() {
       value: portalUColors.uColorEnd,
       onChange(val) {
         if (portalMaterialRef.current) {
-          portalMaterialRef.current.uniforms["uColorEnd"].value.set(val);
+          // instead of this
+          // portalMaterialRef.current.uniforms["uColorEnd"].value.set(val);
+          // we do it like this
+          // @ts-expect-error uniform type not there
+          portalMaterialRef.current["uColorEnd"].set(val);
         }
       },
     },
   });
 
   const bakedTexture = useTexture("/models/portal/baked.jpg");
-
-  // bakedTexture.flipY = false;
-  // we don't need these
-  // bakedTexture.colorSpace = SRGBColorSpace;
-  // bakedTexture.needsUpdate = true;
 
   const model = useGLTF("/models/portal/scene.glb");
   const { nodes } = model;
@@ -69,12 +97,14 @@ export function Experience() {
     Scene: Group;
   } = nodes;
 
-  // console.log({ baked, lampGlassOne, lampGlassTwo });
-
   useFrame(({ clock }) => {
     const elapsed = clock.getElapsedTime();
     if (portalMaterialRef.current) {
-      portalMaterialRef.current.uniforms["uTime"].value = elapsed;
+      // instead of this
+      // portalMaterialRef.current.uniforms["uTime"].value = elapsed;
+      // we do it like this
+      // @ts-expect-error made with extend, uniform not typed
+      portalMaterialRef.current["uTime"] = elapsed;
     }
   });
 
@@ -86,8 +116,7 @@ export function Experience() {
 
       {/* --------------------------------------- */}
       {/* --------------------------------------- */}
-      {/* We can wrap this mesh in Center but we wont
-      we will use position and rotation*/}
+
       <mesh
         geometry={baked.geometry}
         position={baked.position}
@@ -115,7 +144,8 @@ export function Experience() {
         position={portalCircle.position}
         rotation={portalCircle.rotation}
       >
-        <shaderMaterial
+        {/* instead of this */}
+        {/*  <shaderMaterial
           ref={portalMaterialRef}
           vertexShader={portalVertexShader}
           fragmentShader={portalFragmentShader}
@@ -125,8 +155,25 @@ export function Experience() {
             uColorStart: { value: new Color(portalUColors.uColorStart) },
             uColorEnd: { value: new Color(portalUColors.uColorEnd) },
           }}
-        />
+        /> */}
+        {/* we write this */}
+        {/* ------------------------- */}
+        {/* @ts-expect-error implemented with extend */}
+        <portalShaderMaterial ref={portalMaterialRef} />
+        {/* ------------------------- */}
       </mesh>
+      {/* --------------------------------------------------- */}
+      {/* --------------------------------------------------- */}
+      {/* fireflies */}
+      <Center>
+        <Sparkles
+          size={6}
+          scale={[4, 2, 4]}
+          position-y={1}
+          speed={0.2}
+          count={42}
+        />
+      </Center>
     </>
   );
 }

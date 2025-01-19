@@ -9,7 +9,6 @@ import {
   Color,
   DoubleSide,
   type ShaderMaterial,
-  SRGBColorSpace,
   type Group,
   type Mesh,
 } from "three";
@@ -51,11 +50,6 @@ export function Experience() {
   });
 
   const bakedTexture = useTexture("/models/portal/baked.jpg");
-
-  // bakedTexture.flipY = false;
-  // we don't need these
-  // bakedTexture.colorSpace = SRGBColorSpace;
-  // bakedTexture.needsUpdate = true;
 
   const model = useGLTF("/models/portal/scene.glb");
   const { nodes } = model;

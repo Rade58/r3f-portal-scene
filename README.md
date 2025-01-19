@@ -87,3 +87,13 @@ This is the first time we are dealing with particles within r3f
 We can use our custom shaders with particles, but we didn't since these sparkles are similar to fireflies
 
 Check the docs: <https://drei.docs.pmnd.rs/staging/sparkles#sparkles> if you want to add your custom shader
+
+# `shaderMaterial` helper from drei
+
+We will rewrite our portal shader implementation shader code to use mentioned helper
+
+<https://drei.docs.pmnd.rs/shaders/shader-material#shadermaterial>
+
+check `src/8_shader_material_helper/Experience.tsx` to see what we did
+
+We will use `extend` from @react-three/fiber" in this case
