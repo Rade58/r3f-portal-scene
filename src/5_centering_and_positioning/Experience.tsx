@@ -42,13 +42,31 @@ export function Experience() {
 
       {/* --------------------------------------- */}
       {/* --------------------------------------- */}
-
-      <mesh geometry={baked.geometry}>
+      {/* We can wrap this mesh in Center but we wont
+      we will use position and rotation*/}
+      <mesh
+        geometry={baked.geometry}
+        position={baked.position}
+        rotation={baked.rotation}
+      >
         <meshBasicMaterial map={bakedTexture} map-flipY={false} />
       </mesh>
 
-      {/* not going to use this */}
-      {/* <primitive object={model.scene} /> */}
+      <mesh
+        geometry={lampGlassOne.geometry}
+        position={lampGlassOne.position}
+        rotation={lampGlassOne.rotation}
+      ></mesh>
+      <mesh
+        geometry={lampGlassTwo.geometry}
+        position={lampGlassTwo.position}
+        rotation={lampGlassTwo.rotation}
+      ></mesh>
+      <mesh
+        geometry={portalCircle.geometry}
+        position={portalCircle.position}
+        rotation={portalCircle.rotation}
+      ></mesh>
     </>
   );
 }

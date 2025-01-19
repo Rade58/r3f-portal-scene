@@ -35,3 +35,11 @@ The model is composed of multiple parts
 So we are going to access `nodes` property of the model we get from useGLTF
 
 And what is great is that nodes have names we gave them in blender
+
+That way it is easy to destructure the object
+
+# We are not going to use `<primitive>` because we want to apply our own material to the Mesh
+
+# For positioning (centering), I'm not going to use `Center` component
+
+We need to access mesh from nodes, then we use `position` property to position object

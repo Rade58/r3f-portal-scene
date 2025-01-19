@@ -9,7 +9,8 @@ import "./index.css";
 // import { App } from "./2_setup/App";
 // -----------------------------------------------------------
 // import { App } from "./3_initial_setup_and_loading_model/App";
-import { App } from "./4_nodes_property_of_model/App";
+// import { App } from "./4_nodes_property_of_model/App";
+import { App } from "./5_centering_and_positioning/App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
