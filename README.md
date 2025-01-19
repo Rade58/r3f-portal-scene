@@ -42,4 +42,16 @@ That way it is easy to destructure the object
 
 # For positioning (centering), I'm not going to use `Center` component
 
-We need to access mesh from nodes, then we use `position` property to position object
+We need to access mesh from nodes, then we use `position` property to position object, and `rotation` property
+
+This way we will center our model, or each part of our model since we are adding separate parts of our model
+
+# We didn't reuse materials for pole light meshes
+
+Since there is only two of them, there is almost no impact on performance at all
+
+# Shaders
+
+I installed couple of things, and added altered configuration, I also added global.d.ts file to cover importing of shaders
+
+Also don't forget to install noise functions if you want to import them with #pragma syntax

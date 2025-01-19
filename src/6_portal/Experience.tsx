@@ -1,12 +1,29 @@
 import { Center, OrbitControls, useGLTF, useTexture } from "@react-three/drei";
-import { SRGBColorSpace, type Group, type Mesh } from "three";
+import {
+  Color,
+  DoubleSide,
+  type ShaderMaterial,
+  SRGBColorSpace,
+  type Group,
+  type Mesh,
+} from "three";
 
 // import { Perf } from "r3f-perf";
 
-// import { useControls } from "leva";
+import { useControls } from "leva";
+
+import portalVertexShader from "./portal/vertex.glsl";
+import portalFragmentShader from "./portal/fragment.glsl";
+import { useFrame } from "@react-three/fiber";
+import { useRef } from "react";
 
 export function Experience() {
-  // const someControls = useControls("_", { test: 1 });
+  const portalMaterialRef = useRef<ShaderMaterial>(null);
+
+  const portalControls = useControls("portal", {
+    uColorStart: { value: "#89bfcd" },
+    uColorEnd: { value: "#ecdada" },
+  });
   const bakedTexture = useTexture("/models/portal/baked.jpg");
 
   // bakedTexture.flipY = false;
@@ -33,6 +50,13 @@ export function Experience() {
   } = nodes;
 
   // console.log({ baked, lampGlassOne, lampGlassTwo });
+
+  useFrame(({ clock }) => {
+    const elapsed = clock.getElapsedTime();
+    if (portalMaterialRef.current) {
+      portalMaterialRef.current.uniforms["uTime"].value = elapsed;
+    }
+  });
 
   return (
     <>
@@ -70,7 +94,21 @@ export function Experience() {
         geometry={portalCircle.geometry}
         position={portalCircle.position}
         rotation={portalCircle.rotation}
-      ></mesh>
+      >
+        <shaderMaterial
+          ref={portalMaterialRef}
+          vertexShader={portalVertexShader}
+          fragmentShader={portalFragmentShader}
+          side={DoubleSide}
+          uniforms={{
+            uTime: { value: 0 },
+            // as you can see we used color we extracted
+            // and some other color, a white
+            uColorStart: { value: new Color(portalControls.uColorStart) },
+            uColorEnd: { value: new Color(portalControls.uColorEnd) },
+          }}
+        />
+      </mesh>
     </>
   );
 }
